@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import "react-pdf-signer/src/assets/css/index.css";
 import { ViewerLayer } from 'react-pdf-signer';
 import './index.css';
@@ -38,7 +38,8 @@ function App() {
           certInfo={{ 
             id: 1,
             serialNumber: "000000005",
-            displayTitle: "Hans Medina"
+            displayTitle: "Hans Medina",
+            urlImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Y1ch8RTbJ1B9vBQkk3bIFrjA-D0Ovlx5iQ&usqp=CAU"
           }}
           file={file}
           onSigner={(data: any) => console.log(data)}
