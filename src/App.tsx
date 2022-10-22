@@ -13,7 +13,10 @@ function App() {
 
   const handleFile = (e: ChangeEvent, { files }: IHandleFile) => {
     const target: any = e.target;
-    if (!files.length) return (target.value = null);
+    if (!files.length) {
+      target.value = null;
+      return;
+    }
     const tmpFile = files[0];
     target.value = null;
     if (tmpFile.type !== "application/pdf") return;
