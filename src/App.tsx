@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import "react-pdf-signer/src/assets/css/index.css";
 import { ViewerLayer } from 'react-pdf-signer';
+import axios from "axios";
 import './index.css';
 
 interface IHandleFile {
@@ -18,6 +19,28 @@ function App() {
     if (tmpFile.type !== 'application/pdf') return;
     setFile(tmpFile);
   }
+  
+  const signer = (data: IEventSigner | any) => {
+    const form = new FormData();
+    form.set("file", file as any);
+    form.set("visible", data.isVisibled);
+    Object.keys(data).forEach((attr) => form.set(attr, data[attr]));
+    axios
+      .post(`${import.meta.env.VITE_URL}/signers`, form, {
+        responseType: "blob",
+      })
+      .then((res) => {
+        const file = new File([res.data], "signer.pdf", {
+          type: "application/pdf",
+        });
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(file);
+        a.target = "_blank";
+        a.click();
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="App">
@@ -38,11 +61,11 @@ function App() {
           certInfo={{ 
             id: 1,
             serialNumber: "000000005",
-            displayTitle: "Hans Medina",
-            urlImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Y1ch8RTbJ1B9vBQkk3bIFrjA-D0Ovlx5iQ&usqp=CAU"
+            displayTitle: "Senasa",
+            urlImage: "http://munichaclacayo.gob.pe/portals/assets/Videos/SENASA/Senasa_Peru.png"
           }}
           file={file}
-          onSigner={(data: any) => console.log(data)}
+          onSigner={signer}
           onClose={() => setFile(undefined)}
         />
         : null
