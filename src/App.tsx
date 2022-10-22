@@ -1,11 +1,11 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from "react";
 import "react-pdf-signer/src/assets/css/index.css";
-import { ViewerLayer } from 'react-pdf-signer';
+import { IEventSigner, ViewerLayer } from "react-pdf-signer";
 import axios from "axios";
-import './index.css';
+import "./index.css";
 
 interface IHandleFile {
-  files: FileList
+  files: FileList;
 }
 
 function App() {
@@ -13,13 +13,13 @@ function App() {
 
   const handleFile = (e: ChangeEvent, { files }: IHandleFile) => {
     const target: any = e.target;
-    if (!files.length) return target.value = null;
+    if (!files.length) return (target.value = null);
     const tmpFile = files[0];
     target.value = null;
-    if (tmpFile.type !== 'application/pdf') return;
+    if (tmpFile.type !== "application/pdf") return;
     setFile(tmpFile);
-  }
-  
+  };
+
   const signer = (data: IEventSigner | any) => {
     const form = new FormData();
     form.set("file", file as any);
@@ -44,7 +44,6 @@ function App() {
 
   return (
     <div className="App">
-
       <h4>Ejemplo del Firmador PDF para React</h4>
       <br />
       <hr />
@@ -52,26 +51,27 @@ function App() {
       <br />
       <br />
 
-      <input type="file"
+      <input
+        type="file"
         onChange={(e: ChangeEvent) => handleFile(e, e.target as any)}
       />
 
-      {file?.name ?
+      {file?.name ? (
         <ViewerLayer
-          certInfo={{ 
+          certInfo={{
             id: 1,
             serialNumber: "000000005",
             displayTitle: "Senasa",
-            urlImage: "http://munichaclacayo.gob.pe/portals/assets/Videos/SENASA/Senasa_Peru.png"
+            urlImage:
+              "http://munichaclacayo.gob.pe/portals/assets/Videos/SENASA/Senasa_Peru.png",
           }}
           file={file}
           onSigner={signer}
           onClose={() => setFile(undefined)}
         />
-        : null
-      }
+      ) : null}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
